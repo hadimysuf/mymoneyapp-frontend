@@ -1,38 +1,102 @@
-.App {
-  text-align: center;
+:root {
+  --bg: #f4efe6;
+  --bg-soft: #fbf8f2;
+  --panel: rgba(255, 250, 244, 0.86);
+  --panel-strong: #fffdf9;
+  --line: rgba(111, 78, 55, 0.14);
+  --line-strong: rgba(111, 78, 55, 0.22);
+  --text: #2f241d;
+  --muted: #746459;
+  --brand: #0f766e;
+  --brand-dark: #0b4f4a;
+  --accent: #c17c2e;
+  --danger: #b84b4b;
+  --success: #2f855a;
+  --shadow: 0 24px 70px rgba(74, 48, 28, 0.12);
+  --radius-xl: 28px;
+  --radius-lg: 20px;
+  --radius-md: 14px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+body {
+  margin: 0;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  background:
+    radial-gradient(circle at top left, rgba(193, 124, 46, 0.18), transparent 28%),
+    radial-gradient(circle at top right, rgba(15, 118, 110, 0.16), transparent 30%),
+    linear-gradient(180deg, #f8f3eb 0%, #f4efe6 42%, #efe7da 100%);
+  color: var(--text);
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.App-link {
-  color: #61dafb;
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.22) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.18) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: radial-gradient(circle at center, black, transparent 92%);
+  pointer-events: none;
+  opacity: 0.38;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+a {
+  color: inherit;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+input,
+select {
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease, background-color 160ms ease;
+  outline: none;
+}
+
+input::placeholder {
+  color: rgba(116, 100, 89, 0.72);
+}
+
+input:focus,
+select:focus {
+  border-color: rgba(15, 118, 110, 0.44);
+  box-shadow:
+    0 0 0 4px rgba(15, 118, 110, 0.1),
+    0 18px 32px rgba(74, 48, 28, 0.08);
+  transform: translateY(-1px);
+}
+
+select {
+  background-image:
+    linear-gradient(45deg, transparent 50%, rgba(15, 118, 110, 0.92) 50%),
+    linear-gradient(135deg, rgba(15, 118, 110, 0.92) 50%, transparent 50%);
+  background-position:
+    calc(100% - 24px) calc(50% - 3px),
+    calc(100% - 18px) calc(50% - 3px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+button {
+  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  filter: saturate(1.03);
+}
+
+button:active {
+  transform: translateY(0);
 }
