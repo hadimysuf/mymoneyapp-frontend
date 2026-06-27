@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import './App.css';
 import { Navbar } from './components/Navbar';
 import { LoginPage } from './pages/LoginPage';
@@ -7,6 +7,11 @@ import { DashboardPage } from './pages/DashboardPage';
 import { AllocationPage } from './pages/AllocationPage';
 import { TransactionsPage } from './pages/TransactionsPage';
 import { CategoriesPage } from './pages/CategoriesPage';
+import { GamificationPage } from './pages/GamificationPage';
+import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
+import { UserManagementPage } from './pages/admin/UserManagementPage';
+import { UserDetailPage } from './pages/admin/UserDetailPage';
+import { MilestoneManagementPage } from './pages/admin/MilestoneManagementPage';
 import { api } from './services/api';
 import { clearStoredAuth, getStoredAuth, persistAuth } from './services/authStorage';
 import { styles } from './styles/appStyles';
@@ -99,6 +104,7 @@ function App() {
     setCategories([]);
     setBudgets([]);
     setSummary({});
+    window.location.href = '/';
   };
 
   const handleSaveBudget = async (catId, amount) => {
@@ -195,51 +201,67 @@ function App() {
     );
   }
 
+  const isAdmin = auth?.user?.role === 'admin';
+
   return (
     <Router>
       <div style={styles.body}>
         <Navbar currentUser={auth.user} onLogout={handleLogout} />
         <div style={styles.mainContainer}>
           <Routes>
-            <Route path="/" element={<DashboardPage summary={summary} />} />
-            <Route
-              path="/allocation"
-              element={
-                <AllocationPage
-                  categories={categories}
-                  budgets={budgets}
-                  transactions={transactions}
-                  summary={summary}
-                  onSaveBudget={handleSaveBudget}
-                  onDeleteBudget={handleDeleteBudget}
+            {isAdmin ? (
+              <>
+                <Route path="/" element={<AdminDashboardPage />} />
+                <Route path="/admin/users" element={<UserManagementPage />} />
+                <Route path="/admin/users/:id" element={<UserDetailPage />} />
+                <Route path="/admin/milestones" element={<MilestoneManagementPage />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </>
+            ) : (
+              <>
+                <Route path="/" element={<DashboardPage summary={summary} />} />
+                <Route
+                  path="/allocation"
+                  element={
+                    <AllocationPage
+                      categories={categories}
+                      budgets={budgets}
+                      transactions={transactions}
+                      summary={summary}
+                      onSaveBudget={handleSaveBudget}
+                      onDeleteBudget={handleDeleteBudget}
+                    />
+                  }
                 />
-              }
-            />
-            <Route
-              path="/transactions"
-              element={
-                <TransactionsPage
-                  transactions={transactions}
-                  categories={categories}
-                  budgets={budgets}
-                  onSave={handleSaveTrans}
-                  onEdit={handleEditTrans}
-                  onDelete={handleDeleteTrans}
+                <Route
+                  path="/transactions"
+                  element={
+                    <TransactionsPage
+                      transactions={transactions}
+                      categories={categories}
+                      budgets={budgets}
+                      onSave={handleSaveTrans}
+                      onEdit={handleEditTrans}
+                      onDelete={handleDeleteTrans}
+                    />
+                  }
                 />
-              }
-            />
-            <Route
-              path="/categories"
-              element={
-                <CategoriesPage
-                  categories={categories}
-                  transactions={transactions}
-                  budgets={budgets}
-                  onAddCat={handleAddCat}
-                  onDeleteCat={handleDeleteCat}
+                <Route
+                  path="/categories"
+                  element={
+                    <CategoriesPage
+                      categories={categories}
+                      transactions={transactions}
+                      budgets={budgets}
+                      onAddCat={handleAddCat}
+                      onDeleteCat={handleDeleteCat}
+                    />
+                  }
                 />
-              }
-            />
+                <Route path="/gamification" element={<GamificationPage />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </>
+            )}
           </Routes>
         </div>
       </div>
